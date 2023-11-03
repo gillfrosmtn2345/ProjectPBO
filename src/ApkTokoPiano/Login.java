@@ -4,7 +4,13 @@
  * and open the template in the editor.
  */
 package ApkTokoPiano;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 /**
  *
  * @author PC101
@@ -45,7 +51,7 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 0, 0));
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 255, 204), new java.awt.Color(0, 255, 204), new java.awt.Color(0, 255, 204), new java.awt.Color(0, 255, 204)));
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(null, new java.awt.Color(0, 255, 204), new java.awt.Color(0, 255, 204), new java.awt.Color(0, 255, 204), new java.awt.Color(0, 255, 204)));
 
         jScrollPane1.setViewportView(jTextPane1);
 
@@ -74,6 +80,11 @@ public class Login extends javax.swing.JFrame {
         jLabel4.setText(":");
 
         jButton1.setText("Login");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Regristasi");
 
@@ -162,6 +173,27 @@ public class Login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String mysqlURL = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=tokoPiano;TrustServerCertificate=true;Encrypt=false;";
+            Connection con = DriverManager.getConnection(mysqlURL, "eleNDe", "1234");
+            System.out.println("Connection established;" +con);
+            
+            PreparedStatement pat = con.prepareStatement("select * from namatabelnya");
+            ResultSet rat = pat.executeQuery();
+            while(rat.next()){
+                String a = rat.getString("id");
+                System.out.println(a);
+            }
+                    
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
